@@ -25,7 +25,7 @@ const LandingPage = () => {
           <p className="text-lg md:text-2xl mb-8 max-w-2xl text-gray-200">Show live market data, handle donations, and engage your audience like never before.</p>
           <div className="flex gap-4 justify-center">
             <Link to="/configure/buy-bot" className="bg-[#2563eb] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#1d4ed8] transition text-lg">Get Started</Link>
-            <a href="https://streamdotplay.gitbook.io/streamdotplay" target="_blank" rel="noopener noreferrer" className="border border-[#2563eb] text-[#2563eb] px-8 py-3 rounded-lg font-semibold hover:bg-[#2563eb] hover:text-white transition text-lg">View Documentation</a>
+            <a href="https://streamdotfun.gitbook.io/streamdotfun" target="_blank" rel="noopener noreferrer" className="border border-[#2563eb] text-[#2563eb] px-8 py-3 rounded-lg font-semibold hover:bg-[#2563eb] hover:text-white transition text-lg">View Documentation</a>
           </div>
         </div>
       </section>
