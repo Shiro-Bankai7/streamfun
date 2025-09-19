@@ -23,7 +23,7 @@ export function DonationGoals({ currentAmount, goalAmount, onUpdateGoal }: Donat
   };
 
   return (
-    <div className="bg-gray-800 rounded-xl p-6">
+  <div className="bg-gradient-to-b from-[#0a2540] via-[#1e3a5c] to-[#23272f] rounded-xl p-6">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-2">
           <Target className="w-5 h-5 text-green-400" />

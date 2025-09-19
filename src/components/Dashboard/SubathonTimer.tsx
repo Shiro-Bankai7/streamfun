@@ -1,168 +1,119 @@
-import React, { useState, useEffect } from 'react';
-import { Clock, Plus, Play, Pause, RotateCcw } from 'lucide-react';
 
-interface SubathonTimerProps {
-  isActive: boolean;
-  endTime: Date | null;
-  onStart: () => void;
-  onEnd: () => void;
-}
+import React, { useState } from 'react';
 
-export function SubathonTimer({ isActive, endTime, onStart, onEnd }: SubathonTimerProps) {
-  const [timeRemaining, setTimeRemaining] = useState('00:00:00');
-  const [totalExtensions, setTotalExtensions] = useState(0);
-  const [recentExtensions, setRecentExtensions] = useState<Array<{ amount: number, reason: string, timestamp: Date }>>([]);
-
-  useEffect(() => {
-    if (!isActive || !endTime) {
-      setTimeRemaining('00:00:00');
-      return;
-    }
-
-    const interval = setInterval(() => {
-      const now = new Date().getTime();
-      const distance = endTime.getTime() - now;
-
-      if (distance > 0) {
-        const hours = Math.floor(distance / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        setTimeRemaining(
-          `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
-        );
-      } else {
-        setTimeRemaining('00:00:00');
-        onEnd();
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [isActive, endTime, onEnd]);
-
-  // Simulate extensions based on donations
-  useEffect(() => {
-    if (!isActive) return;
-
-    const interval = setInterval(() => {
-      if (Math.random() < 0.1) { // 10% chance every 3 seconds
-        const extensionMinutes = Math.floor(Math.random() * 15) + 5;
-        const reasons = ['Donation Goal Reached', 'New Subscriber', 'Bits Cheered', 'Follower Milestone'];
-        const reason = reasons[Math.floor(Math.random() * reasons.length)];
-        
-        setTotalExtensions(prev => prev + extensionMinutes);
-        setRecentExtensions(prev => [
-          { amount: extensionMinutes, reason, timestamp: new Date() },
-          ...prev.slice(0, 4)
-        ]);
-      }
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [isActive]);
-
-  const handleStartSubathon = () => {
-    setTotalExtensions(0);
-    setRecentExtensions([]);
-    onStart();
-  };
-
-  const formatTime = (minutes: number) => {
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    return `${hours}h ${mins}m`;
-  };
+const SubathonTimer = () => {
+  const [tokenAddress, setTokenAddress] = useState('');
+  const [hours, setHours] = useState('');
+  const [minutes, setMinutes] = useState('');
+  const [seconds, setSeconds] = useState('');
+  const [addPerBuy, setAddPerBuy] = useState('');
+  const [removePerSell, setRemovePerSell] = useState('');
+  const [minTx, setMinTx] = useState('');
+  const [colorStyle, setColorStyle] = useState('Light');
+  const [opacity, setOpacity] = useState(false);
 
   return (
-    <div className="bg-gray-800 rounded-xl p-6">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center space-x-2">
-          <Clock className="w-5 h-5 text-orange-400" />
-          <h2 className="text-xl font-bold">Subathon Timer</h2>
+    <div className="max-w-5xl mx-auto mt-8 p-4">
+      {/* Preview and Widget URL */}
+      <div className="flex flex-col lg:flex-row gap-8 mb-8">
+        {/* Preview */}
+        <div className="flex-1 bg-transparent rounded-xl p-8 border border-white/20">
+          <h2 className="font-semibold text-xl mb-4 text-white">Preview</h2>
+          <div className="flex items-center justify-center min-h-[320px]">
+            <div className="w-80 h-80 flex flex-col items-center justify-center border-2 border-blue-500 rounded-xl">
+              <span className="text-white text-xl font-bold mb-2 tracking-widest">TIME LEFT</span>
+              <span className="text-green-200 text-5xl font-mono font-bold">00:00:00</span>
+            </div>
+          </div>
         </div>
-        
-        <div className="flex items-center space-x-2">
-          {!isActive ? (
-            <button
-              onClick={handleStartSubathon}
-              className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-medium flex items-center space-x-2 transition-colors"
-            >
-              <Play className="w-4 h-4" />
-              <span>Start Subathon</span>
-            </button>
-          ) : (
-            <button
-              onClick={onEnd}
-              className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium flex items-center space-x-2 transition-colors"
-            >
-              <Pause className="w-4 h-4" />
-              <span>End Subathon</span>
-            </button>
-          )}
+        {/* Widget URL */}
+        <div className="flex-1 bg-transparent rounded-xl p-8 border border-white/20">
+          <h2 className="font-semibold text-xl mb-4 text-white">Widget URL</h2>
+          <input
+            className="w-full bg-black border border-white/20 rounded px-4 py-3 mb-2 text-white font-mono"
+            placeholder="Enter the token address."
+            value={tokenAddress}
+            onChange={e => setTokenAddress(e.target.value)}
+          />
         </div>
       </div>
 
-      <div className="space-y-4">
-        {/* Timer Display */}
-        <div className="text-center">
-          <div className={`text-6xl font-mono font-bold mb-2 ${
-            isActive ? 'text-orange-400' : 'text-gray-500'
-          }`}>
-            {timeRemaining}
-          </div>
-          <p className="text-gray-400">
-            {isActive ? 'Time Remaining' : 'No Active Subathon'}
-          </p>
-        </div>
-
-        {/* Stats */}
-        {isActive && (
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-gray-700 rounded-lg p-4 text-center">
-              <div className="text-2xl font-bold text-green-400">{totalExtensions}</div>
-              <div className="text-sm text-gray-400">Minutes Added</div>
+      {/* Configuration Section */}
+      <div className="bg-transparent rounded-2xl border border-white/20 p-8 mt-8">
+        <h1 className="text-3xl font-bold mb-8 text-center text-white">Subathon Timer Widget Configuration</h1>
+        <ol className="space-y-8">
+          {/* 1. Enter Token's CA */}
+          <li>
+            <div className="font-bold text-lg mb-2 text-white">1. Enter Token's CA</div>
+            <input type="text" className="w-full bg-black border border-white/20 rounded-lg px-4 py-3 text-white mb-2" placeholder="e.g., 9hAv86Yo..." value={tokenAddress} onChange={e => setTokenAddress(e.target.value)} />
+            <span className="text-red-400 text-sm">Token address is required.</span>
+          </li>
+          {/* 2. Set Initial Timer Duration */}
+          <li>
+            <div className="font-bold text-lg mb-2 text-white">2. Set Initial Timer Duration</div>
+            <div className="flex gap-4 mb-1">
+              <div className="flex-1">
+                <label className="block text-xs text-gray-400 mb-1">Hours</label>
+                <input type="text" className="w-full bg-black border border-white/20 rounded-lg px-4 py-3 text-white" placeholder="e.g., 12" value={hours} onChange={e => setHours(e.target.value)} />
+              </div>
+              <div className="flex-1">
+                <label className="block text-xs text-gray-400 mb-1">Minutes</label>
+                <input type="text" className="w-full bg-black border border-white/20 rounded-lg px-4 py-3 text-white" placeholder="e.g., 30" value={minutes} onChange={e => setMinutes(e.target.value)} />
+              </div>
+              <div className="flex-1">
+                <label className="block text-xs text-gray-400 mb-1">Seconds</label>
+                <input type="text" className="w-full bg-black border border-white/20 rounded-lg px-4 py-3 text-white" placeholder="e.g., 0" value={seconds} onChange={e => setSeconds(e.target.value)} />
+              </div>
             </div>
-            
-            <div className="bg-gray-700 rounded-lg p-4 text-center">
-              <div className="text-2xl font-bold text-blue-400">{recentExtensions.length}</div>
-              <div className="text-sm text-gray-400">Recent Extensions</div>
-            </div>
-          </div>
-        )}
-
-        {/* Recent Extensions */}
-        {recentExtensions.length > 0 && (
-          <div className="space-y-2">
-            <h4 className="text-sm font-medium text-gray-400">Recent Extensions</h4>
-            <div className="space-y-2 max-h-32 overflow-y-auto">
-              {recentExtensions.map((extension, idx) => (
-                <div key={idx} className="flex items-center justify-between p-2 bg-gray-700 rounded animate-pulse">
-                  <div>
-                    <span className="text-sm font-medium text-white">+{extension.amount} minutes</span>
-                    <p className="text-xs text-gray-400">{extension.reason}</p>
-                  </div>
-                  <span className="text-xs text-gray-500">
-                    {extension.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </span>
-                </div>
+            <span className="text-red-400 text-sm">Initial duration must be greater than 0 seconds.</span>
+            <p className="text-xs text-gray-400 mt-1">Set the starting time for the subathon timer. At least one field must be greater than 0.</p>
+          </li>
+          {/* 3. Set Time Added per Buy */}
+          <li>
+            <div className="font-bold text-lg mb-2 text-white">3. Set Time Added per Buy</div>
+            <label className="block text-xs text-gray-400 mb-1">Seconds added per 1 SOL buy</label>
+            <input type="text" className="w-full bg-black border border-white/20 rounded-lg px-4 py-3 text-white" placeholder="e.g., 60" value={addPerBuy} onChange={e => setAddPerBuy(e.target.value)} />
+            <span className="text-red-400 text-sm">Seconds per SOL buy must be a non-negative number.</span>
+            <p className="text-xs text-gray-400 mt-1">Specify how many seconds to add to the timer for each 1 SOL worth of tokens purchased.</p>
+          </li>
+          {/* 4. Set Time Removed per Sell */}
+          <li>
+            <div className="font-bold text-lg mb-2 text-white">4. Set Time Removed per Sell</div>
+            <label className="block text-xs text-gray-400 mb-1">Seconds removed per 1 SOL sell</label>
+            <input type="text" className="w-full bg-black border border-white/20 rounded-lg px-4 py-3 text-white" placeholder="0" value={removePerSell} onChange={e => setRemovePerSell(e.target.value)} />
+            <p className="text-xs text-gray-400 mt-1">Specify how many seconds to remove from the timer for each 1 SOL worth of tokens sold. Leave blank or set to 0 if sells should not affect the timer.</p>
+          </li>
+          {/* 5. Set Minimum Transaction Value */}
+          <li>
+            <div className="font-bold text-lg mb-2 text-white">5. Set Minimum Transaction Value</div>
+            <label className="block text-xs text-gray-400 mb-1">Minimum SOL transaction to affect timer</label>
+            <input type="text" className="w-full bg-black border border-white/20 rounded-lg px-4 py-3 text-white" placeholder="0" value={minTx} onChange={e => setMinTx(e.target.value)} />
+            <p className="text-xs text-gray-400 mt-1">Only buys and sells greater than or equal to this SOL value will affect the timer. Leave blank or set to 0 to include all transactions.</p>
+          </li>
+          {/* 6. Choose Color & Style */}
+          <li>
+            <div className="font-bold text-lg mb-2 text-white">6. Choose Color & Style</div>
+            <div className="flex gap-4 mb-2">
+              {['Light','Dark','Bright'].map(style => (
+                <button
+                  key={style}
+                  className={`flex-1 py-3 rounded-lg border-2 text-base font-semibold transition-colors ${colorStyle===style ? 'bg-blue-500 text-white border-blue-500' : 'bg-transparent text-white border-white/20'}`}
+                  onClick={()=>setColorStyle(style)}
+                >
+                  {style}
+                  {colorStyle===style && <span className="ml-2">✓</span>}
+                </button>
               ))}
             </div>
-          </div>
-        )}
-
-        {/* How It Works */}
-        {!isActive && (
-          <div className="bg-gray-700 rounded-lg p-4">
-            <h4 className="font-medium mb-2">How Subathon Works</h4>
-            <div className="text-sm text-gray-400 space-y-1">
-              <p>• Viewers can extend the stream by donating, subscribing, or following</p>
-              <p>• Each action adds time to the countdown timer</p>
-              <p>• Stream continues as long as there's time remaining</p>
-              <p>• Create exciting marathon streams with community participation</p>
-            </div>
-          </div>
-        )}
+            <label className="flex items-center gap-2">
+              <input type="checkbox" className="accent-blue-500" checked={opacity} onChange={()=>setOpacity(!opacity)} />
+              <span className="text-sm text-white">Add background opacity</span>
+            </label>
+          </li>
+        </ol>
       </div>
     </div>
   );
-}
+};
+
+export default SubathonTimer;

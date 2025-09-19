@@ -32,7 +32,7 @@ export function StreamAnalytics() {
   };
 
   return (
-    <div className="bg-gray-800 rounded-xl p-6">
+  <div className="bg-gradient-to-b from-[#0a2540] via-[#1e3a5c] to-[#23272f] rounded-xl p-6">
       <div className="flex items-center space-x-2 mb-6">
         <TrendingUp className="w-5 h-5 text-blue-400" />
         <h2 className="text-xl font-bold">Stream Analytics</h2>

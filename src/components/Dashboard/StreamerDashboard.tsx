@@ -11,9 +11,9 @@ import {
   MessageSquare,
   Coins
 } from 'lucide-react';
-import { ChatPanel } from './ChatPanel';
-import { DonationGoals } from './DonationGoals';
-import { SubathonTimer } from './SubathonTimer';
+import { ChatWidget } from './ChatWidget';
+import DonationWidget from './DonationWidget';
+import SubathonTimer  from './SubathonTimer';
 import { TokenSystem } from './TokenSystem';
 import { StreamAnalytics } from './StreamAnalytics';
 
@@ -188,22 +188,13 @@ export function StreamerDashboard() {
           )}
 
           {/* Donation Goals */}
-          <DonationGoals
-            currentAmount={totalDonations}
-            goalAmount={donationGoal}
-            onUpdateGoal={setDonationGoal}
+          <DonationWidget
           />
 
           {/* Subathon Timer */}
           {isLive && (
             <SubathonTimer
-              isActive={subathonActive}
-              endTime={subathonEndTime}
-              onStart={handleStartSubathon}
-              onEnd={() => {
-                setSubathonActive(false);
-                setSubathonEndTime(null);
-              }}
+      
             />
           )}
 
@@ -217,7 +208,7 @@ export function StreamerDashboard() {
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Chat Panel */}
-          {isLive && <ChatPanel />}
+          {isLive && <ChatWidget />}
 
           {/* Quick Actions */}
           <div className="bg-gray-800 rounded-xl p-6">

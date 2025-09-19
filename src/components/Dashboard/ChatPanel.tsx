@@ -88,7 +88,7 @@ export function ChatPanel() {
   };
 
   return (
-    <div className="bg-gray-800 rounded-xl overflow-hidden">
+  <div className="bg-gradient-to-b from-[#0a2540] via-[#1e3a5c] to-[#23272f] rounded-xl overflow-hidden">
       {/* Chat Header */}
       <div className="bg-gray-700 px-4 py-3 flex items-center justify-between">
         <h3 className="font-bold text-white">Stream Chat</h3>

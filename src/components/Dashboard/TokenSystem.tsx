@@ -63,7 +63,7 @@ export function TokenSystem() {
   const totalTokensBurned = burnHistory.reduce((sum, item) => sum + item.amount, 0);
 
   return (
-    <div className="bg-gray-800 rounded-xl p-6">
+  <div className="bg-gradient-to-b from-[#0a2540] via-[#1e3a5c] to-[#23272f] rounded-xl p-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-2">
           <Coins className="w-5 h-5 text-yellow-400" />

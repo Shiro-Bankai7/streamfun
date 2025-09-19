@@ -35,7 +35,7 @@ export function ViewerInterface() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+  <div className="min-h-screen bg-gradient-to-b from-[#0a2540] via-[#1e3a5c] to-[#23272f] text-white">
       {/* Header */}
       <div className="bg-gray-800 border-b border-gray-700 px-6 py-4">
         <div className="flex items-center justify-between">
@@ -66,8 +66,8 @@ export function ViewerInterface() {
         {/* Main Stream Area */}
         <div className="flex-1 p-6">
           {/* Stream Player */}
-          <div className="bg-black rounded-xl overflow-hidden mb-6 relative group">
-            <div className="aspect-video flex items-center justify-center bg-gradient-to-br from-purple-900 to-blue-900">
+          <div className="bg-[#181c23] rounded-xl overflow-hidden mb-6 relative group">
+            <div className="aspect-video flex items-center justify-center bg-gradient-to-b from-[#0a2540] via-[#1e3a5c] to-[#23272f]">
               <div className="text-center">
                 <div className="w-20 h-20 bg-white/10 rounded-full mx-auto mb-4 flex items-center justify-center">
                   <Users className="w-10 h-10 text-white/70" />

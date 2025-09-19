@@ -127,7 +127,7 @@ export function Leaderboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <div className="min-h-screen bg-gradient-to-b from-[#0a2540] via-[#1e3a5c] to-[#23272f] text-white">
       {/* Header */}
       <div className="bg-gray-800 border-b border-gray-700 px-6 py-6">
         <div className="max-w-6xl mx-auto">

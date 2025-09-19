@@ -142,10 +142,10 @@ export function ViewerChat({ userTokens, onTokensChange }: ViewerChatProps) {
               
               {/* Badges */}
               {msg.isModerator && (
-                <Shield className="w-3 h-3 text-green-400" title="Moderator" />
+                <Shield className="w-3 h-3 text-green-400" />
               )}
               {msg.isVip && (
-                <Crown className="w-3 h-3 text-purple-400" title="VIP" />
+                <Crown className="w-3 h-3 text-purple-400" />
               )}
               {msg.isSubscriber && (
                 <span className="text-xs bg-blue-500 text-white px-1.5 py-0.5 rounded font-bold">
